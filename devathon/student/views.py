@@ -50,9 +50,9 @@ def userlist(request):
     print(tok_list)
     due_total = 0
     for tok in tok_list:
-        due_total+=((int(tok.item_name.item_cost))*(int(tok.quantity)))
-       
-    return render(request, 'student/dashboard.html', {'token_list': tok_list,'due_total':due_total})
+        due_total += ((int(tok.item_name.item_cost))*(int(tok.quantity)))
+
+    return render(request, 'student/dashboard.html', {'token_list': tok_list, 'due_total': due_total})
 
 
 """
@@ -111,7 +111,7 @@ def sendEmail(to, transid, otp):
 @login_required
 @user_passes_test(check)
 def order(request):
-    if Transaction.objects.filter(reg_id__user=request.user, status='P').count() > 3:
+    if Transaction.objects.filter(reg_id__user=request.user, status='P').count() >= 3:
         flag = True
         return render(request, 'student/order.html', {'flag': flag})
     if request.method == "POST":

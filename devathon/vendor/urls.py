@@ -4,7 +4,12 @@ from .views import *
 
 app_name = 'vendor'
 
+
 urlpatterns = [
-    path('dashboard/',token_list, name="dashboard"),
-    path('order/',order, name="order"),
+    path('dashboard/', token_list, name='dashboard'),
+    # path('revieworder/', order, name='revieworder'),
+    path('pending/', pending, name='pending'),
+    path('pending/<int:transid>', details, name="details"),
+
+
 ]

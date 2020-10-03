@@ -9,5 +9,5 @@ urlpatterns = [
     path('pending/', pending, name='pending'),
     path('pending/<int:transid>', details, name="details"),
 
-    
+
 ]
