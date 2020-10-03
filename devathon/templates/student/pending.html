@@ -17,6 +17,9 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'student:dashboard'%}">Dashboard </a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'student:placeorder'%}">Place Order </a>
+              </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
             </li>
@@ -71,7 +74,14 @@
                 </div>
               </div>
         </div> -->
-
+      
+      {% if messages %}
+                <div id="message">
+                {% for message in messages %}
+                <div{% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
     <table class="table">
         <thead>
             <tr>

@@ -86,7 +86,7 @@ def createTranId():
         else:
             break
     if count == 0:
-        return HttpResponse('Could not create spreeid', status=405)
+        return HttpResponse('Could not create transaction ID Try again after a while', status=405)
     return transId
 
 

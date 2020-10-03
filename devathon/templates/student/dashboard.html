@@ -80,6 +80,13 @@
           <span class="badge badge-warning badge-lg">Extra Dues : ₹ {{ due_total }}</span>
         </h2>
       </div>
+      {% if messages %}
+                <div id="message">
+                {% for message in messages %}
+                <div{% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
         <table class="table">
           <thead>
             <tr>

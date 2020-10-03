@@ -9,6 +9,8 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
+import smtplib
 
 
 def check(user):
@@ -18,7 +20,7 @@ def check(user):
 @login_required
 @user_passes_test(check)
 def token_list(request):
-    tok_list = Token.objects.all()
+    tok_list = Token.objects.filter(trans_id__status='A')
     print(tok_list)
     flag = True
     return render(request, 'vendor/dashboard.html', {'token_list': tok_list, 'flag': flag})
@@ -68,6 +70,20 @@ def pending(request):
     return render(request, 'vendor/pending.html', {'transaction': transaction})
 
 
+def sendEmail(to, transid):
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.ehlo()
+        server.starttls()
+        server.login('singh_821916@student.nitw.ac.in', 'a1b2c3d4e5@avi')
+        server.sendmail('singh_821916@student.nitw.ac.in', to,
+                        f'This mail is to inform that your tokens for transaction {transid} have been issued. If it is not done by you Please write a complaint back.')
+        server.close()
+        return True
+    except Exception as e:
+        return False
+
+
 @login_required
 @user_passes_test(check)
 def details(request, transid):
@@ -78,7 +94,10 @@ def details(request, transid):
         if transaction.otp == otp:
             transaction.status = 'A'
             transaction.save()
+            messages.success(request, "Tokens issued successfully")
+            sendEmail(transaction.reg_id.user.email, transaction.trans_id)
             return redirect('vendor:pending')
+        messages.error(request, "Please enter correct otp")
         return redirect('vendor:details', transid)
     transaction = get_object_or_404(Transaction, trans_id=transid)
     tok_list = Token.objects.filter(trans_id=transaction)

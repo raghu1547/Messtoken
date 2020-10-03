@@ -11,7 +11,7 @@ class UserRegForm(forms.Form):
         regex="^[1-9][0-9]{5}$", error_messages={'invalid': 'Enter Proper Username'})
     email = forms.EmailField()
     password1 = forms.CharField(widget=forms.PasswordInput(), validators=[
-                                RegexValidator('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$')])
+                                RegexValidator('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{8,}$')], error_messages={'invalid': "Enter valid password"})
     password2 = forms.CharField(widget=forms.PasswordInput(),)
 
     def clean_username(self):

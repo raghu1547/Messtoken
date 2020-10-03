@@ -26,6 +26,14 @@
   </div>
   <form class="form-signin" method="POST">
     {% csrf_token %}
+    
+      {% if messages %}
+                <div id="message">
+                {% for message in messages %}
+                <div{% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
     <div class="form-group">
       <label>Registration Number</label>
       <input type="text" name="reg_id" class="form-control" id="regNum" placeholder=" Eg. 821216">
