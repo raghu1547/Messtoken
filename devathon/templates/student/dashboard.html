@@ -14,8 +14,8 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-        <a class="nav-link" href="/student/placeorder/">Place Order </a>
-          </li>
+                <a class="nav-link" href="{% url 'student:placeorder'%}">Place Order </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
               </li>
@@ -74,9 +74,6 @@
         <table class="table">
           <thead>
             <tr>
-              {% if flag  %}
-              <th scope="col">Student Roll</th>
-              {% endif %}
               <th scope="col">Item name</th>
               <th scope="col">Cost per item</th>
               <th scope="col">Quantity</th>
@@ -87,11 +84,6 @@
       {% for tok in token_list %}          
           <tbody>
             <tr>
-              
-              {% if flag  %}
-              <td>{{ tok.reg_id.user.username }}</td>
-  
-              {% endif %}
               <td>{{ tok.item_name }}</td>
               <td>{{ tok.item_name.item_cost }}</td>
               <td>{{ tok.quantity }}</td>

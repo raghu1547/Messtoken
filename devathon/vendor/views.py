@@ -26,16 +26,15 @@ def token_list(request):
 @login_required
 @user_passes_test(check)
 def order(request):
+    print(request.user)
     if request.method == "POST":
-        extraItems = ExtraItems.objects.all()
-        content = {
-            "extraItems": extraItems,
-        }
+        print(request.POST)
         reg_id = request.POST['reg_id']
         Passcode = request.POST['Passcode']
         try:
             student = Student.objects.get(user__username=reg_id)
-            if student.pass_code == Passcode and int(Passcode)>0:
+            print(student)
+            if student.pass_code == Passcode:
                 for item in request.POST:
                     if item != 'reg_id' and item != 'Passcode' and item != 'csrfmiddlewaretoken':
                         try:
@@ -48,14 +47,13 @@ def order(request):
                                 token.save()
                         except:
                             pass
-                student.pass_code = -1
-                student.save()
-                content['servedSuccess'] = True
-                return render(request, 'vendor/order.html', content)
+                return redirect('vendor:order')
             else:
-                content['servedFail'] = True
-                return render(request, 'vendor/order.html', content)
+                return redirect('vendor:order')
         except:
             return redirect('vendor:order')
-    
+    extraItems = ExtraItems.objects.all()
+    content = {
+        "extraItems": extraItems,
+    }
     return render(request, 'vendor/order.html', content)

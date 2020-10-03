@@ -1,9 +1,10 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import userlist, placeOrder
+from .views import userlist, order
 app_name = 'student'
 
 urlpatterns = [
-    path('dashboard/',userlist,name='dashboard'),
-    path('placeorder/',placeOrder, name='placeOrder')
+    path('dashboard/', userlist, name='dashboard'),
+    path('placeorder/', order, name='placeorder'),
+    # path('pending/', pending, name='pending'),
 ]

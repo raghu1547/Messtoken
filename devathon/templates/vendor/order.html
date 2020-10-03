@@ -12,33 +12,17 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Dashboard </a>
+        <a class="nav-link" href="#">Review Orders </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/logout/">Logout</a>
-      </li>
+                <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+              </li>
     </ul>
   </div>
 </nav>
-  {% if servedSuccess %}
-
-    <div class="alert alert-success alert-dismissible show" role="alert">
-      Order<strong>Served! </strong>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-{% elif servedFail %}
-    <div class="alert alert-danger alert-dismissible show" role="alert">
-      Order <strong>not</strong> served!
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-{% endif %}
 <div class="container">
   <div class="jumbotron">
-    <h1 class="display-4"><strong>Serve Order</strong> </h1>
+    <h1 class="display-4"><strong>Place Order</strong> </h1>
   </div>
   <form class="form-signin" method="POST">
     {% csrf_token %}

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 
+from django.contrib.messages import constants as messages
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -137,3 +138,6 @@ LOGIN_REDIRECT_URL = 'student:dashboard'
 LOGIN_URL = '/'
 
 
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}

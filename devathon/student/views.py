@@ -1,13 +1,15 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.views.generic import ListView
 from student.models import Student
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from vendor.models import ExtraItems, Token, Transaction
+from django.shortcuts import get_object_or_404
+# Create your views here.
+from vendor.models import Token
+from django.contrib import messages
 import random
 import smtplib
-# Create your views here.
-from vendor.models import Token, ExtraItems
 
 from django.contrib.auth import get_user_model
 
@@ -24,7 +26,7 @@ def check(user):
     except:
         print('in expect')
         return False
-    
+
 """
 """
 def check(user):
@@ -44,10 +46,9 @@ def check(user):
 @user_passes_test(check)
 def userlist(request):
     tok_list = Token.objects.filter(
-        reg_id__user__username=request.user.username)
+        trans_id__reg_id__user__username=request.user.username).filter(trans_id__status='A')
     print(tok_list)
-    flag = False
-    return render(request, 'student/dashboard.html', {'token_list': tok_list, 'flag': flag})
+    return render(request, 'student/dashboard.html', {'token_list': tok_list})
 
 
 """
@@ -71,18 +72,32 @@ class UserToken(ListView):
 """
 
 
+def createTranId():
+    transId = random.randint(100000000, 999999999)
+    count = 20
+    while count > 0:
+        if Transaction.objects.filter(trans_id=transId).exists():
+            count = count - 1
+            transId = random.randint(100000000, 999999999)
+        else:
+            break
+    if count == 0:
+        return HttpResponse('Could not create spreeid', status=405)
+    return transId
+
+
 def generate_otp():
     return random.randint(100000, 999999)
 
 
-def sendEmail(to, otp):
+def sendEmail(to, transid, otp):
     try:
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.ehlo()
         server.starttls()
         server.login('singh_821916@student.nitw.ac.in', 'a1b2c3d4e5@avi')
         server.sendmail('singh_821916@student.nitw.ac.in', to,
-                        f'Thanks for odering with us. Your OTP is {otp}.')
+                        f'Thanks for odering with us. Your OTP for transaction {transid} is {otp}.')
         server.close()
         return True
     except Exception as e:
@@ -90,23 +105,52 @@ def sendEmail(to, otp):
 
 
 @login_required
-def placeOrder(request):
+@user_passes_test(check)
+def order(request):
+    if Transaction.objects.filter(reg_id__user=request.user, status='P').count() > 3:
+        flag = True
+        return render(request, 'student/order.html', {'flag': flag})
+    if request.method == "POST":
+        try:
+            student = Student.objects.get(user=request.user)
+            quants = []
+            print(student)
+            for item in request.POST:
+                if item != 'csrfmiddlewaretoken':
+                    try:
+                        found = get_object_or_404(
+                            ExtraItems, item_name=item)
+                        quantity = int(request.POST[item])
+                        if quantity > 0:
+                            quants.append((quantity, found))
+                            print(quantity)
+                    except:
+                        pass
+            if len(quants):
+                transid = createTranId()
+                otp = generate_otp()
+                print(transid, otp)
+                transaction = Transaction(
+                    trans_id=transid, reg_id=student, otp=otp)
+                transaction.save()
+                for item in quants:
+                    print(item)
+                    token = Token.objects.create(
+                        trans_id=transaction, item_name=item[1], quantity=item[0])
+                    token.save()
+                print(request.user.email)
+                if sendEmail(request.user.email, transid, otp):
+                    print("kriabsf")
+                    messages.success(request, "Order Placed successfully")
+                return redirect('student:order')
+            else:
+                messages.error(request, "Don't fill fake forms")
+                return redirect('student:order')
+        except:
+            messages.error(request, "Something went wrong")
+            return redirect('student:order')
     extraItems = ExtraItems.objects.all()
     content = {
         "extraItems": extraItems,
     }
-    if (request.method == "POST"):
-        user = request.user
-        otp = generate_otp()
-
-        studentObj = Student.objects.filter(user=user)[0]
-        userEmail = studentObj.email
-
-        if sendEmail(userEmail, otp):
-            studentObj.pass_code = otp
-            studentObj.save()
-            print("successful")
-            content['statusSuccess'] = True
-        else:
-            content['statusFail'] = True
     return render(request, 'student/order.html', content)
