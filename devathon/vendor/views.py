@@ -21,7 +21,7 @@ def check(user):
 @user_passes_test(check)
 def token_list(request):
     tok_list = Token.objects.filter(trans_id__status='A')
-    print(tok_list)
+    # print(tok_list)
     flag = True
     return render(request, 'vendor/dashboard.html', {'token_list': tok_list, 'flag': flag})
 
@@ -66,7 +66,7 @@ def token_list(request):
 @user_passes_test(check)
 def pending(request):
     transaction = Transaction.objects.filter(status='P')
-    print(transaction)
+    # print(transaction)
     return render(request, 'vendor/pending.html', {'transaction': transaction})
 
 
@@ -90,7 +90,7 @@ def details(request, transid):
     if request.method == "POST":
         otp = request.POST["otp"]
         transaction = get_object_or_404(Transaction, trans_id=transid)
-        print("hai")
+        # print("hai")
         if transaction.otp == otp:
             transaction.status = 'A'
             transaction.save()
@@ -101,6 +101,6 @@ def details(request, transid):
         return redirect('vendor:details', transid)
     transaction = get_object_or_404(Transaction, trans_id=transid)
     tok_list = Token.objects.filter(trans_id=transaction)
-    print(tok_list)
-    print(transaction)
+    # print(tok_list)
+    # print(transaction)
     return render(request, 'vendor/details.html', {'transaction': transaction, 'token_list': tok_list})

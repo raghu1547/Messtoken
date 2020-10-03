@@ -27,7 +27,7 @@ class UserRegForm(forms.Form):
             if not user:
                 pass
             else:
-                print("jris")
+                # print("jris")
                 raise forms.ValidationError("Username Already Exists")
         except Exception as e:
             raise e

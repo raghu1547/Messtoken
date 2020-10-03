@@ -47,7 +47,7 @@ def check(user):
 def userlist(request):
     tok_list = Token.objects.filter(
         trans_id__reg_id__user__username=request.user.username).filter(trans_id__status='A')
-    print(tok_list)
+    # print(tok_list)
     due_total = 0
     for tok in tok_list:
         due_total += ((int(tok.item_name.item_cost))*(int(tok.quantity)))
@@ -118,7 +118,7 @@ def order(request):
         try:
             student = Student.objects.get(user=request.user)
             quants = []
-            print(student)
+            # print(student)
             for item in request.POST:
                 if item != 'csrfmiddlewaretoken':
                     try:
@@ -127,24 +127,24 @@ def order(request):
                         quantity = int(request.POST[item])
                         if quantity > 0:
                             quants.append((quantity, found))
-                            print(quantity)
+                            # print(quantity)
                     except:
                         pass
             if len(quants):
                 transid = createTranId()
                 otp = generate_otp()
-                print(transid, otp)
+                # print(transid, otp)
                 transaction = Transaction(
                     trans_id=transid, reg_id=student, otp=otp)
                 transaction.save()
                 for item in quants:
-                    print(item)
+                    # print(item)
                     token = Token.objects.create(
                         trans_id=transaction, item_name=item[1], quantity=item[0])
                     token.save()
-                print(request.user.email)
+                # print(request.user.email)
                 if sendEmail(request.user.email, transid, otp):
-                    print("kriabsf")
+                    # print("kriabsf")
                     messages.success(request, "Order Placed successfully")
                 return redirect('student:placeorder')
             else:
@@ -165,7 +165,7 @@ def order(request):
 def pending(request):
     transaction = Transaction.objects.filter(
         reg_id__user=request.user, status='P')
-    print(transaction)
+    # print(transaction)
     return render(request, 'student/pending.html', {'transaction': transaction})
 
 
@@ -174,6 +174,6 @@ def pending(request):
 def details(request, transid):
     transaction = get_object_or_404(Transaction, trans_id=transid)
     tok_list = Token.objects.filter(trans_id=transaction)
-    print(tok_list)
-    print(transaction)
+    # print(tok_list)
+    # print(transaction)
     return render(request, 'student/details.html', {'transaction': transaction, 'token_list': tok_list})

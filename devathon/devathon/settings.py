@@ -22,7 +22,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMP_DIR = os.path.join(BASE_DIR, "templates")
-print(TEMP_DIR)
+# print(TEMP_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -142,8 +142,6 @@ LOGIN_URL = '/'
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
-
-
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

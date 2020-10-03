@@ -28,11 +28,6 @@
 				<br>
 				<br>
 		{% endblock %}
-
-
-    {% block js %}
-	{% endblock %}
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
@@ -44,6 +39,8 @@
         setTimeout(() => {
       $("#message").fadeOut("slow");}, 3000);
     </script>
+    {% block js %}
+	  {% endblock %}
   </body>
   
 </html>

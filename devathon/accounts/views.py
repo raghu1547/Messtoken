@@ -63,8 +63,8 @@ def user_register(request):
     if request.method == "POST":
         form = UserRegForm(request.POST)
         if form.is_valid():
-            print(form['username'])
-            print(form.cleaned_data)
+            # print(form['username'])
+            # print(form.cleaned_data)
             regUser(form.cleaned_data)
             messages.success(request, "Registration Successful")
             return redirect('accounts:login')
