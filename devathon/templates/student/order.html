@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}Orders{% endblock %}
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <a class="navbar-brand" href="#">Mess Service</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/student/dashboard/">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout/">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+  {% if statusSuccess %}
+
+    <div class="alert alert-success alert-dismissible show" role="alert">
+      Order<strong>Placed! </strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+{% elif statusFail %}
+    <div class="alert alert-danger alert-dismissible show" role="alert">
+      Order <strong>not</strong> placed!
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+{% endif %}
+
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-4"><strong>Place Order</strong> </h1>
+  </div>
+  <form class="form-signin" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <div class="container">
+        <button type="submit">Order Coupon</button>
+        <div class="container"></div>
+      </div>
+  </form>
+</div>
+
+
+
+{% endblock %}
