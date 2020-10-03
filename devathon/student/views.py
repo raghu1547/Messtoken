@@ -154,3 +154,22 @@ def order(request):
         "extraItems": extraItems,
     }
     return render(request, 'student/order.html', content)
+
+
+@login_required
+@user_passes_test(check)
+def pending(request):
+    transaction = Transaction.objects.filter(
+        reg_id__user=request.user, status='P')
+    print(transaction)
+    return render(request, 'student/pending.html', {'transaction': transaction})
+
+
+@login_required
+@user_passes_test(check)
+def details(request, transid):
+    transaction = get_object_or_404(Transaction, trans_id=transid)
+    tok_list = Token.objects.filter(trans_id=transaction)
+    print(tok_list)
+    print(transaction)
+    return render(request, 'student/details.html', {'transaction': transaction, 'token_list': tok_list})

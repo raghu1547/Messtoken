@@ -14,10 +14,10 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link" href="{% url 'student:placeorder'%}">Place Order </a>
+                <a class="nav-link" href="{% url 'student:dashboard'%}">Dashboard </a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="{% url 'student:pending'%}">Pending Transactions </a>
+                <a class="nav-link" href="{% url 'student:placeorder'%}">Place Order </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
@@ -27,7 +27,7 @@
 </nav>
 <div class="container">
     <div class="jumbotron" style="height: 100px;padding-top: 2rem;">
-        <h1 ><strong>All Transactions</strong> </h1>
+        <h1>Transaction : {{transaction.trans_id}} OTP : {{transaction.otp}}</h1>
     </div>
 <!-- 
       <div class="container mb-4">
