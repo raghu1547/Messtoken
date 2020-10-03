@@ -1,11 +1,9 @@
 # devathon
 
-#Team No 13
+# Team No 13
 
-Raghu Nagam 
+Raghu Nagam - 851833 / 187139
 
-Krishna Sai
+Krishna Sai - 951845 / 187112
 
-Abhishek
-
-Ganesh
+Abhishek - 821916 / 197103
