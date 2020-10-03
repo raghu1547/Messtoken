@@ -142,13 +142,13 @@ def order(request):
                 if sendEmail(request.user.email, transid, otp):
                     print("kriabsf")
                     messages.success(request, "Order Placed successfully")
-                return redirect('student:order')
+                return redirect('student:placeorder')
             else:
                 messages.error(request, "Don't fill fake forms")
-                return redirect('student:order')
+                return redirect('student:placeorder')
         except:
             messages.error(request, "Something went wrong")
-            return redirect('student:order')
+            return redirect('student:placeorder')
     extraItems = ExtraItems.objects.all()
     content = {
         "extraItems": extraItems,

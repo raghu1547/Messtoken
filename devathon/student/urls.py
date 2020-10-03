@@ -7,5 +7,7 @@ urlpatterns = [
     path('dashboard/', userlist, name='dashboard'),
     path('placeorder/', order, name='placeorder'),
     path('pending/', pending, name='pending'),
-    path('pending/<int:transid>', details, name="details")
+    path('pending/<int:transid>', details, name="details"),
+
+    
 ]
