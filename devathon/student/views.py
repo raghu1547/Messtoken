@@ -48,7 +48,11 @@ def userlist(request):
     tok_list = Token.objects.filter(
         trans_id__reg_id__user__username=request.user.username).filter(trans_id__status='A')
     print(tok_list)
-    return render(request, 'student/dashboard.html', {'token_list': tok_list})
+    due_total = 0
+    for tok in tok_list:
+        due_total+=((int(tok.item_name.item_cost))*(int(tok.quantity)))
+       
+    return render(request, 'student/dashboard.html', {'token_list': tok_list,'due_total':due_total})
 
 
 """
