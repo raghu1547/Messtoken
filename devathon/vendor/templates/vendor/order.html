@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}Orders{% endblock %}
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <a class="navbar-brand" href="#">Mess Service</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Review Orders </a>
+      </li>
+      <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+              </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-4"><strong>Place Order</strong> </h1>
+  </div>
+  <form class="form-signin" method="POST">
+    {% csrf_token %}
+    
+      {% if messages %}
+                <div id="message">
+                {% for message in messages %}
+                <div{% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+    <div class="form-group">
+      <label>Registration Number</label>
+      <input type="text" name="reg_id" class="form-control" id="regNum" placeholder=" Eg. 821216">
+    </div>
+
+    <div class="form-group">
+      <div class="container">
+        {% for extraItem in extraItems %}
+        <div class="row m-2 border-bottom">
+          <div class="col-3"><label>{{extraItem.item_name}} </label></div>
+          <div class="col-1"><label class="badge badge-secondary p-2">Rs. {{extraItem.item_cost}} </label></div>
+          <div class="col-4">
+            <label>Q : </label>
+            <input class="mr-2" type="number" name="{{extraItem.item_name}}" min="0" max="9" value=0 />
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="container">
+        <label for="inputPassword" class="sr-only">PassCode</label>
+        <input type="password" id="passCode" name="Passcode" placeholder="PassCode" required> <button
+          type="submit">Order Now</button>
+        <div class="container"></div>
+      </div>
+  </form>
+</div>
+
+
+
+{% endblock %}

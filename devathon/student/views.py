@@ -1,3 +1,4 @@
+from devathon.settings import EMAIL_HOST, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, EMAIL_PORT
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import Http404, HttpResponse
 from django.views.generic import ListView
@@ -95,12 +96,13 @@ def generate_otp():
 
 
 def sendEmail(to, transid, otp):
+    print(to)
     try:
-        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server = smtplib.SMTP(EMAIL_HOST,EMAIL_PORT)
         server.ehlo()
         server.starttls()
-        server.login('singh_821916@student.nitw.ac.in', 'a1b2c3d4e5@avi')
-        server.sendmail('singh_821916@student.nitw.ac.in', to,
+        print(server.login(EMAIL_HOST_USER,EMAIL_HOST_PASSWORD))
+        server.sendmail(EMAIL_HOST_USER, to,
                         f'Thanks for odering with us. Your OTP for transaction {transid} is {otp}.')
         server.close()
         return True
@@ -111,7 +113,7 @@ def sendEmail(to, transid, otp):
 @login_required
 @user_passes_test(check)
 def order(request):
-    if Transaction.objects.filter(reg_id__user=request.user, status='P').count() >= 3:
+    if Transaction.objects.filter(reg_id__user=request.user, status='P').count() >= 10:
         flag = True
         return render(request, 'student/order.html', {'flag': flag})
     if request.method == "POST":

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}Pending Transactions{% endblock %}
+
+{% block body %}
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <a class="navbar-brand" href="#">Mess Service</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'vendor:dashboard'%}">Dashboard </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <div class="jumbotron" style="height: 100px;padding-top: 2rem;">
+    <h1><strong>Pending Transactions</strong> </h1>
+  </div>
+  <!-- 
+      <div class="container mb-4">
+        <div class="row">
+          
+          <div class="col-3">
+            Student Roll
+          </div>
+          <div class="col-2">
+            Item
+          </div>
+          <div class="col-2 text-center">
+            Quantity
+          </div>
+          <div class="col-2 text-center">
+            Amount
+          </div>
+          <div class="col-3 text-right pr-4">
+            Date - Time
+          </div>
+        </div>
+      </div> -->
+
+
+  <!-- <div class="breadcrumb">
+            <div class="container">
+                <div class="row">
+                  <div class="col-3 px-0">
+                    {{ tok.reg_id.user.username }}
+                  </div>
+                  <div class="col-2 px-0">
+                    {{ tok.item_name }}
+                  </div>
+                  <div class="col-2 text-center">
+                    {{ tok.quantity }}
+                  </div>
+                  <div class="col-2 text-center">
+                   {{ tok.item_name.item_cost }}
+                  </div>
+                  <div class="col-3 text-right text-wrap">
+                    {{ tok.date }}
+                  </div>
+                </div>
+              </div>
+        </div> -->
+
+  {% if messages %}
+  <div id="message">
+    {% for message in messages %}
+    <div{% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+<div class="m-3 d-flex align-items-center">
+  <span class="lead font-weight-bold mx-3">Filter : </span>
+  <select id="filterSelect" class="custom-select w-25 custom-select-sm mx-2">
+    <option value="null" selected>Select transaction</option>
+    {% for trans in transaction %}
+    <option value="{{trans.trans_id}}">{{trans.trans_id}}</option>
+    {% endfor %}
+  </select>
+  <button type="submit" id="filter" class="btn btn-primary mx-4">View</button>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Transaction ID</th>
+      <th scope="col">Reg ID</th>
+      <th scope="col"> Details</th>
+    </tr>
+  </thead>
+
+  {% for tok in transaction %}
+  <tbody>
+    <tr>
+      <td>{{ tok.trans_id }}</td>
+      <td>{{ tok.reg_id}}</td>
+      <td><a type="submit" class="btn btn-secondary" href="{% url 'vendor:details' tok.trans_id %}">View</a>
+      </td>
+    </tr>
+  </tbody>
+
+  {% endfor %}
+</table>
+{% endblock %}
+{% block js %}
+<script>
+  $("#filter").click(function () {
+    val = $("#filterSelect").val();
+    if (val !== "null") {
+      url = `${val}`
+      $(location).attr('href', url)
+    }
+  })</script>
+{% endblock %}
